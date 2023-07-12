@@ -1,0 +1,116 @@
+<HTML>
+    <HEAD>
+        <TITLE>Curve editor</TITLE>
+        <style>
+            .boxshadow {
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+                padding-top: 50px;
+                padding-right: 30px;
+                padding-bottom: 50px;
+                padding-left: 50px;
+                width: 100%;
+            }
+
+            .button {
+                background-color: #2196F3;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                display: inline-block;
+                font-size: 16px;
+                cursor: hand;
+            }
+
+            .button:hover {
+                background-color: #45a7f5;
+            }
+
+            .styled-table {
+                border-collapse: collapse;
+                margin: 25px 0;
+                font-size: 0.9em;
+                font-family: sans-serif;
+                min-width: 400px;
+            }
+
+            th,
+            td {
+                padding: 12px 12px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #333;
+                color: #fff;
+            }
+
+            .blue {
+                background-color: #2196F3;
+                color: white;
+            }
+
+        </style>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    </HEAD>
+    <BODY BGCOLOR="white">
+        <center>
+            <div>
+                <canvas id="canvas" width='500px' height='400px' style="border: 1px solid black"></canvas>
+            </div>
+            <hr width=400px color=#fff>
+            <!-- <div width=400px align=right>
+                <button id="resetButton" class="button">Reset</button>
+            </div> -->
+            <div width=400px>
+                <table class="styled-table">
+                    <tr>
+                        <td width=33%>
+                            <button id="resetButton" class="button">Circle</button>
+                        </td>
+                        <td width=33%>
+                            <input type="checkbox" id="BezierToggleBox" onchange="BezierToggle()" checked /> Show Bézier
+                        </td>
+                        <td width=33%>
+                            <input type="checkbox" id="BarycentricToggleBox" onchange="BarycentricToggle()" checked /> Show interpolation
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width=33%>
+                            <button id="wingButton" class="button">Plane wing</button>
+                        </td>
+                        <td width=33%>
+                            <button id="infinityButton" class="button">Jar</button>
+                        </td>
+                        <td width=33%>
+                            <button id="trefoilButton" class="button">Trefoil</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- <div class='boxshadow'>
+                <ul>
+                    <li> move the points around to control the shape</li>
+                    <li> scroll up/down to change the weight of a point</li>
+                    <li> use "ctrl + mouse" combo to slide interpolation to the left </li>
+                    <li> use "shift + mouse" combo to slide interpolation to the right </li>
+                </ul>
+            </div> -->
+        </center>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.2.1/math.js"></script>
+        <script >
+            class Point
+            {
+                constructor(x,y)
+                {
+                    this.x = x;
+                    this.y = y;
+                }
+            }
+        </script>
+        <script src="BezierCurves.js"></script>
+        <script src="main.js"></script>
+    </BODY>
+</HTML>
