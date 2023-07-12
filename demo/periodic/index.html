@@ -3,12 +3,12 @@
         <TITLE>Curve editor</TITLE>
         <style>
             .boxshadow {
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-                padding-top: 50px;
-                padding-right: 30px;
-                padding-bottom: 50px;
-                padding-left: 50px;
-                width: 100%;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                padding-top: 10px;
+                padding-right: 10px;
+                padding-bottom: 10px;
+                padding-left: 10px;
+                width: 480px;
             }
 
             .button {
@@ -55,12 +55,12 @@
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     </HEAD>
-    <BODY BGCOLOR="white">
-        <center>
-            <div>
-                <canvas id="canvas" width='500px' height='400px' style="border: 1px solid black"></canvas>
+    <BODY BGCOLOR="white" style=" font-family:sans-serif; max-width: 500px; margin: auto;">
+        <a href="../../index.html" style="color: gray"> home </a><br>
+            <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); width=500px;">
+                <canvas id="canvas" width='500px' height='400px'></canvas>
             </div>
-            <hr width=400px color=#fff>
+            <!-- <hr width=400px color=#fff> -->
             <!-- <div width=400px align=right>
                 <button id="resetButton" class="button">Reset</button>
             </div> -->
@@ -90,15 +90,14 @@
                     </tr>
                 </table>
             </div>
-            <!-- <div class='boxshadow'>
+            <div class='boxshadow'>
                 <ul>
-                    <li> move the points around to control the shape</li>
+                    <li> move the points around to design the shape</li>
                     <li> scroll up/down to change the weight of a point</li>
-                    <li> use "ctrl + mouse" combo to slide interpolation to the left </li>
-                    <li> use "shift + mouse" combo to slide interpolation to the right </li>
+                    <li> use "ctrl + left-button" to slide interpolation to the left </li>
+                    <li> use "shift + left-button" to slide interpolation to the right </li>
                 </ul>
-            </div> -->
-        </center>
+            </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.2.1/math.js"></script>
         <script >
             class Point
