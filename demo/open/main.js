@@ -71,12 +71,16 @@ movingmouse = function(event) {
         for (let i = 1; i < degree; i++) {
             if (math.norm([interPoints[i].x - mousex, interPoints[i].y - mousey]) < 10){
                 if (T[i-1] < T[i]-0.01){
+                	beta = slide_tk_update_beta(beta, T, i, T[i]-0.01);
+                	interPoints[i] = point_on_bezier(bezier, alpha, T[i]-0.01);
                     T[i] = T[i] - 0.01;
                 }
                 
-                let tmp = bezierToBarycentric(bezier, alpha, T);
-                interPoints = tmp[0];
-                beta = tmp[1];
+                // beta = slide_tk_update_beta(beta, T, i, T[i]);
+                // interPoints[i] = point_on_bezier(bezier, alpha, T[i]);
+                // let tmp = bezierToBarycentric(bezier, alpha, T);
+                // interPoints = tmp[0];
+                // beta = tmp[1];
                 
             }
         }
@@ -88,12 +92,15 @@ movingmouse = function(event) {
         for (let i = 1; i < degree; i++) {
             if (math.norm([interPoints[i].x - mousex, interPoints[i].y - mousey]) < 10){
                 if (T[i+1] > T[i]+0.01){
+                	beta = slide_tk_update_beta(beta, T, i, T[i]+0.01);
+                	interPoints[i] = point_on_bezier(bezier, alpha, T[i]+0.01);
                     T[i] = T[i] + 0.01;
                 }
                 
-                let tmp = bezierToBarycentric(bezier, alpha, T);
-                interPoints = tmp[0];
-                beta = tmp[1];
+                
+                // let tmp = bezierToBarycentric(bezier, alpha, T);
+                // interPoints = tmp[0];
+                // beta = tmp[1];
                 
             }
         }
@@ -106,8 +113,8 @@ movingmouse = function(event) {
                 let dx = -bezier[0].x + mousex;
                 let dy = -bezier[0].y + mousey;
                 bezier[0] = {x: mousex, y: mousey};
-                bezier[1].x = bezier[1].x + dx;
-                bezier[1].y = bezier[1].y + dy;
+                // bezier[1].x = bezier[1].x + dx;
+                // bezier[1].y = bezier[1].y + dy;
                 let tmp = bezierToBarycentric(bezier, alpha, T);
                 interPoints = tmp[0];
                 beta = tmp[1];
@@ -118,8 +125,8 @@ movingmouse = function(event) {
                 let dx = -bezier[3].x + mousex;
                 let dy = -bezier[3].y + mousey;
                 bezier[3] = {x: mousex, y: mousey};
-                bezier[2].x = bezier[2].x + dx;
-                bezier[2].y = bezier[2].y + dy;
+                // bezier[2].x = bezier[2].x + dx;
+                // bezier[2].y = bezier[2].y + dy;
                 let tmp = bezierToBarycentric(bezier, alpha, T);
                 interPoints = tmp[0];
                 beta = tmp[1];
@@ -154,6 +161,7 @@ movingmouse = function(event) {
 
 function handleResetClick() {
     bezier = [{x: 100, y: 200}, {x: 200, y: 100}, {x: 300, y: 200}, {x: 400, y: 200}];
+    degree = 3;
     alpha = [1, 1, 1, 1];
     T = [0, 1/3, 2/3, 1];
     let tmp = bezierToBarycentric(bezier, alpha, T);
@@ -163,15 +171,16 @@ function handleResetClick() {
 
 weightChange = function(event){
     getMousePosition(event);
+    // console.log(beta);
     for (let i = 1; i < degree; i++) {
         if (math.norm([bezier[i].x - mousex, bezier[i].y - mousey]) < 5){
             var dx = 0;
             if (event.deltaY>0){
-                dx = -0.05;
+                dx = -0.5;
             } else {
-                dx = 0.05;
+                dx = 0.5;
             }
-            if (0 < alpha[i]+dx && alpha[i]+dx < 5)
+            if (0 < alpha[i]+dx && alpha[i]+dx < 20)
                 alpha[i] = alpha[i] + dx;
 
             let tmp = bezierToBarycentric(bezier, alpha, T);
@@ -184,16 +193,19 @@ weightChange = function(event){
         if (math.norm([interPoints[i].x - mousex, interPoints[i].y - mousey]) < 5){
             var dx = 0;
             if (event.deltaY>0){
-                dx = -0.05;
+                dx = -0.5;
             } else {
-                dx = 0.05;
+                dx = 0.5;
             }
-            if (0.5 < beta[i]+dx && beta[i]+dx < 1.5)
+            if (0 < beta[i]+dx && beta[i]+dx < 20)
                 beta[i] = beta[i] + dx;
 
             let tmp = barycentricToBezier(interPoints, beta, T);
             bezier = tmp[0];
             alpha = tmp[1];
+            // console.log("weightChange");
+            // console.log(bezier);
+            // console.log(alpha);
 
             return;
         };
@@ -230,6 +242,7 @@ function animate() {
     for (let i = 0; i < sample + 1; i++) {
         let t = i / sample;
         C.push(point_on_bezier(bezier, alpha, t));
+        // C.push(point_on_barycentric_curve(interPoints, beta, T, t));
     }
 
     canvasContext.strokeStyle = 'black';
@@ -254,9 +267,16 @@ function animate() {
         canvasContext.lineTo(bezier[3].x, bezier[3].y);
         canvasContext.stroke();
 
+        for (let i = 1; i < degree-1; i++){
+        	canvasContext.beginPath();
+        	canvasContext.moveTo(bezier[i].x, bezier[i].y);
+        	canvasContext.lineTo(bezier[i+1].x, bezier[i+1].y);
+        	canvasContext.stroke();
+        }
+
         for (let i = 1; i < degree; i++) {
             canvasContext.beginPath();
-            var radius = 3;
+            var radius = 2;
             canvasContext.lineWidth = 1;
             canvasContext.strokeStyle = 'green';
             canvasContext.fillStyle = 'green';
@@ -264,12 +284,24 @@ function animate() {
             canvasContext.fill();
             canvasContext.stroke();
         }
+
+        for (let i = 1; i < degree; i++) {
+	        canvasContext.beginPath();
+	        var radius = 3;
+	        canvasContext.lineWidth = 1;
+	        canvasContext.strokeStyle = 'red';
+	        canvasContext.fillStyle = 'white';
+	        canvasContext.arc(bezier[i].x, bezier[i].y, radius, 0, 2 * Math.PI);
+	        canvasContext.fill();
+	        canvasContext.stroke();
+	    }
     }
     
-    for (let i = 0; i < degree+1; i=i+3) {
+    // for (let i = 0; i < degree+1; i=i+3) {
+    for (const i of [0, degree]) {
         canvasContext.beginPath();
-        var radius = 5;
-        canvasContext.lineWidth = 2;
+        var radius = 3;
+        canvasContext.lineWidth = 1;
         canvasContext.strokeStyle = 'red';
         canvasContext.fillStyle = 'white';
         canvasContext.arc(bezier[i].x, bezier[i].y, radius, 0, 2 * Math.PI);
