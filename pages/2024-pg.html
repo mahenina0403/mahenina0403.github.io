@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigonometric tangent interpolating curves</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        .sidebar {
+            width: 25%;
+            background-color: #314047;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .sidebar-content {
+            text-align: center;
+        }
+        .sidebar button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .sidebar p {
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .pdf-viewer {
+            width: 75%; /* 75% width for the second column */
+            padding: 20px; /* Padding for content */
+        }
+        iframe {
+            width: 100%; /* Full width of the iframe */
+            height: 100%; /* Adjust height as needed */
+            border: none; /* Remove border */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <!-- Home Button -->
+            <button onclick="window.location.href='../index.html'">Home</button>
+
+            <!-- Some Text -->
+            <p>
+            Ramanantoanina, A. and Hormann, K.<br>
+            Trigonometric tangent interpolating curves,<br>
+            Pacific Graphics Conference Proceedings,<br>
+            Eurographics, 2024
+            </p>
+
+            <!-- List of Links -->
+            <ul>
+                <li>[<a href="">published version</a>]</li>
+                <li>[<a href="../bibtex/2024-pg.bib">bibtex</a>]</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="pdf-viewer">
+        <iframe id="pdfViewer"></iframe>
+
+        <script>
+            const pdfFile = '../pdf/2024-pg.pdf'; // The path to your PDF file
+            const pdfPageWidth = 794; // A4 width in pixels (at 96 DPI)
+            const iframe = document.getElementById('pdfViewer');
+
+            function updateViewer() {
+                // Get the current window width
+                const windowWidth = window.innerWidth;
+
+                // Compute the viewer width based on the desired percentage (e.g., 75%)
+                const viewerWidth = windowWidth * 0.65;
+
+                // Calculate the zoom level
+                const zoomLevel = (viewerWidth / pdfPageWidth) * 100;
+
+                // Construct the URL with the new zoom level
+                const pdfUrl = `${pdfFile}#zoom=${zoomLevel.toFixed(2)}`;
+
+                // Set the iframe's src attribute to the constructed URL
+                iframe.src = pdfUrl;
+            }
+
+            // Initial load
+            updateViewer();
+
+            // Update the viewer when the window is resized
+            window.addEventListener('resize', updateViewer);
+        </script>
+    </div>
+</body>
+</html>
